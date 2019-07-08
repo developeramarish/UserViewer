@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserViewer.Common\UserViewer.Common.csproj" />
+    <ProjectReference Include="..\UserViewer.Service\UserViewer.Service.csproj" />
+  </ItemGroup>
+
+</Project>
