@@ -3,8 +3,12 @@ This is a tiny app built in a complex way in order to demonstrate best practices
 
 To run this project you first need to create a few environment variables in your system
 UserViewer.Service.ApiDataService.Url             -> http://localhost:5000/api/user
+
 UserViewer.Service.CacheDataService.CacheDuration -> 0:0:30
+
 UserViewer.Service.CsvDataService.FilePath        -> Csv\\data.csv
+
 UserViewer.Service.SqlDataService.Connection      -> Data Source=user.db
+
 
 Then you need to choose which datasource will serve data. The choice is between a csv file, a sqlite database and an api. You make this selection in the UI project -> App.xaml.cs, where dependency injection takes place. If you choose the api, before running the UI project, you need to open a command prompt at the folder level of the api project (UserViewer.API) and run the command 'dotnet run'.
