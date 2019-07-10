@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading.Tasks;
-using UserViewer.Service.Csv;
 
 namespace UserViewer.Service.CSV.Tests
 {
@@ -12,12 +11,10 @@ namespace UserViewer.Service.CSV.Tests
     public async Task GetUsers_GoodRecordsOnly_ReturnsAllRecords()
     {
       // Arrange
-      var fakeFileLoader = new FakeInfoLoader { Name = nameof(TestData.GoodRecordsOnly) };
-      var dataService = new CsvDataService();
-      dataService.FileLoader = fakeFileLoader;
+      var service = new FakeCsvDataService(nameof(TestData.GoodRecordsOnly));
 
       // Act
-      var users = await dataService.GetUsers();
+      var users = await service.GetUsers();
 
       // Assert
       Assert.IsNotNull(users);
@@ -28,12 +25,10 @@ namespace UserViewer.Service.CSV.Tests
     public async Task GetUsers_BadRecordsOnly_ReturnsEmptyList()
     {
       // Arrange
-      var fakeFileLoader = new FakeInfoLoader { Name = nameof(TestData.BadRecordsOnly) };
-      var dataService = new CsvDataService();
-      dataService.FileLoader = fakeFileLoader;
+      var service = new FakeCsvDataService(nameof(TestData.BadRecordsOnly));
 
       // Act
-      var users = await dataService.GetUsers();
+      var users = await service.GetUsers();
 
       // Assert
       Assert.IsNotNull(users);
@@ -44,12 +39,10 @@ namespace UserViewer.Service.CSV.Tests
     public async Task GetUsers_MixedRecords_ReturnsGoodRecords()
     {
       // Arrange
-      var fakeFileLoader = new FakeInfoLoader { Name = nameof(TestData.GoodAndBadRecords) };
-      var dataService = new CsvDataService();
-      dataService.FileLoader = fakeFileLoader;
+      var service = new FakeCsvDataService(nameof(TestData.GoodAndBadRecords));
 
       // Act
-      var users = await dataService.GetUsers();
+      var users = await service.GetUsers();
 
       // Assert
       Assert.IsNotNull(users);
@@ -60,12 +53,10 @@ namespace UserViewer.Service.CSV.Tests
     public async Task GetUsers_EmptyFile_ReturnsEmptyList()
     {
       // Arrange
-      var fakeFileLoader = new FakeInfoLoader { Name = "Empty" };
-      var dataService = new CsvDataService();
-      dataService.FileLoader = fakeFileLoader;
+      var service = new FakeCsvDataService("Empty");
 
       // Act
-      var users = await dataService.GetUsers();
+      var users = await service.GetUsers();
 
       // Assert
       Assert.IsNotNull(users);

@@ -9,14 +9,6 @@ namespace UserViewer.Service.Csv
 {
   public class CsvDataService : IDataService
   {
-    public IInfoLoaderAsync FileLoader { get; set; }
-    private const string ENV_VARIABLE_FILE_PATH = "FilePath";
-
-    public CsvDataService()
-    {
-      FileLoader = new FileLoader { Type = GetType(), Name = ENV_VARIABLE_FILE_PATH };
-    }
-
     public async Task<User> GetUser(int id)
     {
       var users = await GetUsers();
@@ -25,9 +17,8 @@ namespace UserViewer.Service.Csv
 
     public async Task<IEnumerable<User>> GetUsers()
     {
-      string fileData = await FileLoader.Load();
-      return
-        fileData
+      var data = await GetFileData();
+      return data
           .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
           .Select(line => ParseLineToUser(line))
           .Where(e => e != null);
@@ -36,7 +27,7 @@ namespace UserViewer.Service.Csv
     private User ParseLineToUser(string line)
     {
       string[] segments = line.Split(',');
-      return segments.Length == PropertyCounter<User>.Count() ?
+      return segments.Length == Utilities.Count<User>() ?
         new User
         {
           Id = int.Parse(segments[0]),
@@ -44,6 +35,12 @@ namespace UserViewer.Service.Csv
           LastName = segments[2]
         }
         : null;
+    }
+
+    protected virtual async Task<string> GetFileData()
+    {
+      Type type = GetType();
+      return await Utilities.LoadFile($"{type.Name}.FilePath", type);
     }
 
   }

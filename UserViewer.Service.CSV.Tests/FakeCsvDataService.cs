@@ -1,19 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
-using UserViewer.Common.Utilities;
+﻿using System.Threading.Tasks;
+using UserViewer.Service.Csv;
 
 namespace UserViewer.Service.CSV.Tests
 {
-  public class FakeInfoLoader : IInfoLoaderAsync
+  public class FakeCsvDataService : CsvDataService
   {
-    public string Name { get; set; }
-    public Type Type { get; set; }
-
-    public Task<string> Load()
+    private string testDataName;
+    public FakeCsvDataService(string testDataName)
     {
-      return Task.Run(() =>
+      this.testDataName = testDataName;
+    }
+    protected override async Task<string> GetFileData()
+    {
+      return await Task.Run(() =>
       {
-        switch (Name)
+        switch (testDataName)
         {
           case nameof(TestData.GoodRecordsOnly):
             return TestData.GoodRecordsOnly;
@@ -28,6 +29,5 @@ namespace UserViewer.Service.CSV.Tests
         }
       });
     }
-
   }
 }

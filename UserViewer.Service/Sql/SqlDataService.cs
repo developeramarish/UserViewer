@@ -8,15 +8,14 @@ namespace UserViewer.Service.Sql
 {
   public class SqlDataService : IDataService
   {
-    private const string ENV_VARIABLE_CONNECTION = "Connection";
     private DbContextOptions<UserContext> options;
     public SqlDataService()
     {
-      IInfoLoader envVariableLoader = new EnvVariableLoader { Name = ENV_VARIABLE_CONNECTION, Type = GetType() };
-      var envVariable = envVariableLoader.Load();
+      string key = $"{GetType().Name}.Connection";
+      string connection = Utilities.LoadConfig(key);
 
       var builder = new DbContextOptionsBuilder<UserContext>();
-      builder.UseSqlite(envVariable);
+      builder.UseSqlite(connection);
       options = builder.Options;
     }
     public async Task<User> GetUser(int id)

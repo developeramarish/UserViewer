@@ -8,24 +8,19 @@ namespace UserViewer.Service.Api
 {
   public class ApiDataService : IDataService
   {
-    private const string ENV_VARIABLE_URL = "Url";
     private readonly string url;
-
     public ApiDataService()
     {
-      IInfoLoader envVariableLoader = new EnvVariableLoader { Name = ENV_VARIABLE_URL, Type = GetType() };
-      url = envVariableLoader.Load();
+      string key = $"{this.GetType().Name}.Url";
+      url = Utilities.LoadConfig(key);
     }
-
     public async Task<IEnumerable<User>> GetUsers()
     {
       return await url.GetJsonAsync<IEnumerable<User>>();
     }
-
     public async Task<User> GetUser(int id)
     {
       return await $"{url}/{id}".GetJsonAsync<User>();
     }
-
   }
 }
